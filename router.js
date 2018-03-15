@@ -2,10 +2,20 @@ const render=require('./render.js')
 const express=require('express')
 let router=express.Router()
 
-router.get('/', render.getIndexPage);
-router.get('/add', render.getAddPage);
-router.get('/del', render.doDel);
-router.get('/login', render.getLoginPage);
-router.post('/login', render.doLogin);
+router.post('/login', render.login)
+router.post('/register', render.register)
+router.post('/changepwd', render.changepwd)
+router.get('/home', render.getHomeData)
+router.get('/add', render.addWork)
+router.get('/del', render.delWork)
+router.get('/message', render.getMessageData)
+router.get('/message/reply', render.replyMessage)
+router.get('/comment', render.getCommentData)
+router.get('/commenttome', render.commentToMe)
+router.get('/commenttome/reply', render.replyComment)
+router.get('/funs', render.getFunsData)
+router.get('/funs/update', render.updateFuns)
+router.get('/follow/update', render.updateFollow)
+router.get('/follow', render.getFollowData)
 
-module.exports = router;
+module.exports = router

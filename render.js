@@ -1,11 +1,13 @@
 // 处理
-var formidable = require('formidable');
-var path = require('path');
+// var formidable = require('formidable');
+// var path = require('path');
 var myurl = require('url');
-var queryString = require('querystring');
-var myModules = require('./myModule.js');
-var fs = require('fs');
-
+// var queryString = require('querystring');
+var modules = require('./module.js');
+// var fs = require('fs');
+module.exports.login=(req,res)=>{
+  console.log(req,res)
+}
 module.exports.getIndexPage = function (req, res) {
   myModules.getAllData((err, data) => {
     if (err) return res.end('数据获取失败');
