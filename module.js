@@ -14,6 +14,7 @@ module.exports.getUserData = function (callback) {
     if (err) {
       callback(err);
     } else {
+      // console.log(result)
       callback(null, result);
     }
   });
