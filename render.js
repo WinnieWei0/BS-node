@@ -6,25 +6,43 @@ var queryString = require('querystring');
 var modules = require('./module.js');
 // var fs = require('fs');
 // 登录
-module.exports.login=(req,res)=>{
-  modules.getUserData(req.body.userName,(err,data)=>{
-    if(err){
+module.exports.login = (req, res) => {
+  modules.getUserData(req.body.userName, (err, data) => {
+    if (err) {
       res.end('登录失败')
-    }else{
+    } else {
       res.end(JSON.stringify(data))
     }
   })
 }
 // 注册
-module.exports.register=(req,res)=>{
-  modules.insertUserData(obj,(err,data)=>{
-    if(err){
-      return res.end('注册失败')
-    }else{
-      return res.end(data)
+module.exports.register = (req, res) => {
+  modules.getUserData(req.body.userName, (err, data) => {
+    if (err) {
+      res.end('注册失败1')
+    } else {
+      return res.end(JSON.stringify({
+        code: 500,
+        msg: '账号已存在'
+      }))
     }
+    modules.insertUserData(req.body, (err, data) => {
+      if (err) {
+        return res.end('注册失败2')
+      } else {
+        return res.end(JSON.stringify({
+          code: 200,
+          msg: '注册成功'
+        }))
+      }
+    })
   })
 }
+// 发布作品
+module.exports.addWork=(req,res)=>{
+  console.log(req)
+}
+
 // module.exports.getIndexPage = function (req, res) {
 //   myModules.getAllData((err, data) => {
 //     if (err) return res.end('数据获取失败');
