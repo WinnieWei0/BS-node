@@ -42,8 +42,8 @@ module.exports.delWork = function (obj, callback) {
 }
 // 发布作品
 module.exports.insertWork = function (obj, callback) {
-  var sql = 'insert into work(workName,workDetail,workCode) values(?,?,?)';
-  con.query(sql, [obj.workName, obj.workDetail, obj.workCode], (err, result) => {
+  var sql = 'insert into work(user_id,workName,workDetail,workCode,createTime) values(?,?,?,?,?)';
+  con.query(sql, [obj.user_id,obj.workName, obj.workDetail, obj.workCode,obj.createTime], (err, result) => {
     if (err) {
       callback(err);
     } else {
@@ -54,6 +54,40 @@ module.exports.insertWork = function (obj, callback) {
 // 删除作品
 module.exports.delWork = function (id, callback) {
   var sql = 'update work set isDel=1 where w_id=' + id;
+  con.query(sql, (err, result) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null, result);
+    }
+  });
+}
+// 最新作品
+module.exports.getNewWork = function (callback) {
+  var sql = `select * from work where isDel=0 order by createTime desc limit 0,10`;
+  con.query(sql, (err, result) => {
+    if (err) {
+      console.log(err)
+      callback(err);
+    } else {
+      callback(null, result);
+    }
+  });
+}
+// 推荐作品
+module.exports.getGoodWork = function (callback) {
+  var sql = `select * from work where isDel=0 order by count desc limit 0,10`;
+  con.query(sql, (err, result) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null, result);
+    }
+  });
+}
+// 优秀作者
+module.exports.getGoodAuther = function (callback) {
+  var sql = `select work.user_id,userName,sum(count) from work left join user on work.user_id=user.user_id group by user_id order by sum(count) desc`;
   con.query(sql, (err, result) => {
     if (err) {
       callback(err);

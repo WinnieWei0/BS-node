@@ -40,8 +40,48 @@ module.exports.register = (req, res) => {
 }
 // 发布作品
 module.exports.addWork=(req,res)=>{
-  console.log(req)
+  modules.insertWork(req.query,(err,data)=>{
+    if(err){
+      res.end('发布失败')
+    }else{
+      res.end(JSON.stringify({
+        code: 200,
+        msg: '发布成功'
+      }))
+    }
+  })
 }
+// 首页数据
+module.exports.getHomeData=(req,res)=>{
+  let homeData={}
+  modules.getNewWork((err,data)=>{
+    if(err){
+      res.end('最新作品数据获取失败')
+    }else{
+      homeData.newWork = data
+    }
+  })
+  modules.getGoodWork((err, data) => {
+    if (err) {
+      res.end('推荐作品数据获取失败')
+    } else {
+      homeData.goodWork = data
+    }
+  })
+  modules.getGoodAuther((err, data) => {
+    if (err) {
+      res.end('推荐作者数据获取失败')
+    } else {
+      homeData.goodAuther = data
+  res.end(JSON.stringify(homeData))
+    }
+  })
+}
+
+
+
+
+
 
 // module.exports.getIndexPage = function (req, res) {
 //   myModules.getAllData((err, data) => {
