@@ -2,18 +2,16 @@
 // var formidable = require('formidable');
 // var path = require('path');
 var myurl = require('url');
-// var queryString = require('querystring');
+var queryString = require('querystring');
 var modules = require('./module.js');
 // var fs = require('fs');
 // 登录
 module.exports.login=(req,res)=>{
-  // console.log(req,res)
-  modules.getUserData((err,data)=>{
-    // console.log(data)
+  modules.getUserData(req.body.userName,(err,data)=>{
     if(err){
-      return res.end('登录失败')
+      res.end('登录失败')
     }else{
-      return res.end(JSON.stringify(data))
+      res.end(JSON.stringify(data))
     }
   })
 }

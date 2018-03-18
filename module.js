@@ -8,13 +8,12 @@ var con = sql.createConnection({
 });
 con.connect();
 // 登录
-module.exports.getUserData = function (callback) {
-  var sql = 'select * from user';
-  con.query(sql, (err, result) => {
+module.exports.getUserData = function (userName,callback) {
+  var sql = `select * from user where userName='${userName}'`;
+  con.query(sql,(err, result) => {
     if (err) {
       callback(err);
     } else {
-      // console.log(result)
       callback(null, result);
     }
   });
