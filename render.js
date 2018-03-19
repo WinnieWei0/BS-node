@@ -77,7 +77,16 @@ module.exports.getHomeData=(req,res)=>{
     }
   })
 }
-
+//评论数据
+module.exports.getComment=(req,res)=>{
+  modules.getCommentData((err,data)=>{
+    if(err){
+      res.end('评论数据获取失败')
+    }else{
+      res.end(JSON.stringify(data))
+    }
+  })
+}
 
 
 

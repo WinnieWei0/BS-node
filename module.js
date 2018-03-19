@@ -64,7 +64,7 @@ module.exports.delWork = function (id, callback) {
 }
 // 最新作品
 module.exports.getNewWork = function (callback) {
-  var sql = `select * from work where isDel=0 order by createTime desc limit 0,10`;
+  var sql = `select w_id,userName,workName,createTime from work left join user on work.user_id=user.user_id where isDel=0 order by createTime desc limit 0,10`;
   con.query(sql, (err, result) => {
     if (err) {
       console.log(err)
@@ -76,7 +76,7 @@ module.exports.getNewWork = function (callback) {
 }
 // 推荐作品
 module.exports.getGoodWork = function (callback) {
-  var sql = `select * from work where isDel=0 order by count desc limit 0,10`;
+  var sql = `select w_id,userName,workName,workDetail,createTime,count from work left join user on work.user_id=user.user_id where isDel=0 order by count desc limit 0,10`;
   con.query(sql, (err, result) => {
     if (err) {
       callback(err);
@@ -118,9 +118,9 @@ module.exports.insertMsgData = function (obj, callback) {
     }
   });
 }
-// 给我的评论--查看
-module.exports.getCTMData = function (callback) {
-  var sql = 'select * from message';
+// 我的评论--查看
+module.exports.getCommentData = function (callback) {
+  var sql = 'SELECT c_id,userName,`comment`.w_id,workName,cmDetail from `comment` left join user on `comment`.user_id=`user`.user_id left join work on `work`.w_id=`comment`.user_id';
   con.query(sql, (err, result) => {
     if (err) {
       callback(err);
@@ -129,8 +129,8 @@ module.exports.getCTMData = function (callback) {
     }
   });
 }
-// 给我的评论--回复
-module.exports.insertCTMData = function (obj, callback) {
+// 我的评论--回复
+module.exports.insertCommentData = function (obj, callback) {
   var sql = `insert into commenttome(user_id,w_id,cmDetail) values(?,?,?)`;
   con.query(sql, [obj.user_id,obj.w_id,obj.cmDetail], (err, result) => {
     if (err) {
