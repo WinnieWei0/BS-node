@@ -98,7 +98,7 @@ module.exports.getGoodAuther = function (callback) {
 }
 //查看留言
 module.exports.getMsgData = function (callback) {
-  var sql = 'select * from message';
+  var sql = 'SELECT m_id,userName,mDetail from `message` left join user on `message`.user_id=`user`.user_id';
   con.query(sql, (err, result) => {
     if (err) {
       callback(err);
@@ -131,7 +131,7 @@ module.exports.getCommentData = function (callback) {
 }
 // 我的评论--回复
 module.exports.insertCommentData = function (obj, callback) {
-  var sql = `insert into commenttome(user_id,w_id,cmDetail) values(?,?,?)`;
+  var sql = `insert into comment(user_id,w_id,cmDetail) values(?,?,?)`;
   con.query(sql, [obj.user_id,obj.w_id,obj.cmDetail], (err, result) => {
     if (err) {
       callback(err);
@@ -141,8 +141,8 @@ module.exports.insertCommentData = function (obj, callback) {
   });
 }
 // 我的粉丝--查看
-module.exports.getCTMData = function (callback) {
-  var sql = 'select * from funs';
+module.exports.FunsData = function (callback) {
+  var sql = 'SELECT funs_id,userName,status from `funs` left join user on `funs`.user_id=`user`.user_id';
   con.query(sql, (err, result) => {
     if (err) {
       callback(err);
@@ -152,7 +152,7 @@ module.exports.getCTMData = function (callback) {
   });
 }
 // 我的粉丝--关注他
-module.exports.delWork = function (id, callback) {
+module.exports.updateFunsStatus = function (id, callback) {
   var sql = 'update funs set status=1 where funs_id=' + id;
   con.query(sql, (err, result) => {
     if (err) {

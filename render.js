@@ -87,7 +87,40 @@ module.exports.getComment=(req,res)=>{
     }
   })
 }
-
+// 留言数据
+module.exports.getMessageData = (req, res) => {
+  modules.getMsgData((err, data) => {
+    if (err) {
+      res.end('留言数据获取失败')
+    } else {
+      res.end(JSON.stringify(data))
+    }
+  })
+}
+// 粉丝数据
+module.exports.getFunsData=(req,res)=>{
+modules.FunsData((err,data)=>{
+  if (err) {
+    res.end('粉丝数据获取失败')
+  } else {
+    res.end(JSON.stringify(data))
+  }
+})
+}
+// 关注粉丝
+module.exports.updateFuns=(req,res)=>{
+  // console.log(req.query)
+  modules.updateFunsStatus(req.query.id,(err,data)=>{
+    if (err) {
+      res.end('关注该粉丝失败')
+    } else {
+      res.end(JSON.stringify({
+        code:200,
+        msg:'关注成功'
+      }))
+    }
+  })
+}
 
 
 
