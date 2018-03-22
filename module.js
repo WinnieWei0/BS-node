@@ -163,8 +163,8 @@ module.exports.updateFunsStatus = function (id, callback) {
   });
 }
 // 我的关注--查看
-module.exports.getCTMData = function (callback) {
-  var sql = 'select * from follow';
+module.exports.followData = function (callback) {
+  var sql = 'SELECT follow_id,userName,status from `follow` left join user on `follow`.user_id=`user`.user_id';
   con.query(sql, (err, result) => {
     if (err) {
       callback(err);
@@ -174,8 +174,8 @@ module.exports.getCTMData = function (callback) {
   });
 }
 // 我的关注--取消关注
-module.exports.delWork = function (id, callback) {
-  var sql = 'update funs set status=0 where follow_id=' + id;
+module.exports.noFollow = function (id, callback) {
+  var sql = 'update follow set status=0 where follow_id=' + id;
   con.query(sql, (err, result) => {
     if (err) {
       callback(err);

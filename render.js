@@ -121,7 +121,30 @@ module.exports.updateFuns=(req,res)=>{
     }
   })
 }
-
+// 关注数据
+module.exports.getFollowData = (req, res) => {
+  modules.followData((err, data) => {
+    if (err) {
+      res.end('关注数据获取失败')
+    } else {
+      res.end(JSON.stringify(data))
+    }
+  })
+}
+// 取消关注
+module.exports.updateFollow = (req, res) => {
+  // console.log(req.query)
+  modules.noFollow(req.query.id, (err, data) => {
+    if (err) {
+      res.end('取消关注失败')
+    } else {
+      res.end(JSON.stringify({
+        code: 200,
+        msg: '取消关注成功'
+      }))
+    }
+  })
+}
 
 
 

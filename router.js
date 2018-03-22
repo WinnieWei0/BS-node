@@ -14,7 +14,7 @@ router.get('/comment', render.getComment)
 // router.get('/comment/reply', render.replyComment)
 router.get('/funs', render.getFunsData)
 router.get('/funs/update', render.updateFuns)
-// router.get('/follow/update', render.updateFollow)
-// router.get('/follow', render.getFollowData)
+router.get('/follow/update', render.updateFollow)
+router.get('/follow', render.getFollowData)
 
 module.exports = router
