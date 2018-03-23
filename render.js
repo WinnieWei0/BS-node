@@ -145,7 +145,20 @@ module.exports.updateFollow = (req, res) => {
     }
   })
 }
-
+//修改密码
+module.exports.changepwd=(req,res)=>{
+  console.log(req)
+  modules.modify(req.body,(err,data)=>{
+    if (err) {
+      res.end('修改密码失败')
+    } else {
+      res.end(JSON.stringify({
+        code: 200,
+        msg: '修改密码成功'
+      }))
+    }
+  })
+}
 
 
 // module.exports.getIndexPage = function (req, res) {

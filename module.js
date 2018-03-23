@@ -30,8 +30,8 @@ module.exports.insertUserData = function (obj, callback) {
   });
 }
 // 修改密码
-module.exports.delWork = function (obj, callback) {
-  var sql = 'update user set userPwd=' + obj.password + ' where user_id=' + obj.id;
+module.exports.modify = function (obj, callback) {
+  var sql = `UPDATE user set userPwd='${obj.password}' where user_id=${obj.id}`;
   con.query(sql, (err, result) => {
     if (err) {
       callback(err);

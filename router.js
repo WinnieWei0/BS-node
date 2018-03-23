@@ -4,7 +4,7 @@ let router=express.Router()
 
 router.post('/login', render.login)
 router.post('/register', render.register)
-// router.post('/changepwd', render.changepwd)
+router.post('/changepwd', render.changepwd)
 router.get('/home', render.getHomeData)
 router.get('/add', render.addWork)
 // router.get('/del', render.delWork)
