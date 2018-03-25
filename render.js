@@ -159,7 +159,29 @@ module.exports.changepwd=(req,res)=>{
     }
   })
 }
-
+// 删除作品
+module.exports.delWork=(req,res)=>{
+  modules.delWorkData(req.query.id,(err,data)=>{
+    if(err){
+      res.end('作品删除失败')
+    }else{
+      res.end(JSON.stringify({
+        code:200,
+        msg:'删除成功'
+      }))
+    }
+  })
+}
+// 个人中心
+module.exports.getUserList = (req, res) => {
+  modules.userListData(req.query.id, (err, data) => {
+    if (err) {
+      res.end('个人中心数据获取失败')
+    } else {
+      res.end(JSON.stringify(data))
+    }
+  })
+}
 
 // module.exports.getIndexPage = function (req, res) {
 //   myModules.getAllData((err, data) => {

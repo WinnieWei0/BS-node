@@ -52,7 +52,7 @@ module.exports.insertWork = function (obj, callback) {
   });
 }
 // 删除作品
-module.exports.delWork = function (id, callback) {
+module.exports.delWorkData= function (id, callback) {
   var sql = 'update work set isDel=1 where w_id=' + id;
   con.query(sql, (err, result) => {
     if (err) {
@@ -176,6 +176,17 @@ module.exports.followData = function (callback) {
 // 我的关注--取消关注
 module.exports.noFollow = function (id, callback) {
   var sql = 'update follow set status=0 where follow_id=' + id;
+  con.query(sql, (err, result) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null, result);
+    }
+  });
+}
+// 个人中心数据
+module.exports.userListData = function (id,callback) {
+  var sql = 'select `work`.w_id,workName,workDetail,count,createTime,count(c_id) as commentCount from work left join comment on `work`.w_id=`comment`.w_id where `work`.user_id='+id+' and isDel=0 group by `work`.w_id,`comment`.user_id';
   con.query(sql, (err, result) => {
     if (err) {
       callback(err);
