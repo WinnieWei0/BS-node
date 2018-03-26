@@ -195,3 +195,14 @@ module.exports.userListData = function (id,callback) {
     }
   });
 }
+// 作品详情
+module.exports.workDetailData=function (id,callback) {
+  var sql = 'select w_id,userName,workName,workDetail,workCode,count from `work` left join user on `work`.user_id=`user`.user_id where isDel=0 and w_id='+id;
+  con.query(sql, (err, result) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null, result);
+    }
+  });
+}

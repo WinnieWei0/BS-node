@@ -17,5 +17,6 @@ router.get('/funs/update', render.updateFuns)
 router.get('/follow/update', render.updateFollow)
 router.get('/follow', render.getFollowData)
 router.get('/userlist', render.getUserList)
+router.get('/detail', render.workDetail)
 
 module.exports = router
