@@ -18,5 +18,6 @@ router.get('/follow/update', render.updateFollow)
 router.get('/follow', render.getFollowData)
 router.get('/userlist', render.getUserList)
 router.get('/detail', render.workDetail)
+router.get('/thumbs', render.thumbs)
 
 module.exports = router

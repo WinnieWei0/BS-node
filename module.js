@@ -206,3 +206,14 @@ module.exports.workDetailData=function (id,callback) {
     }
   });
 }
+// 点赞
+module.exports.thumbsData=function (id,count,callback) {
+  var sql = 'UPDATE `work` set count='+count+' where w_id='+id;
+  con.query(sql, (err, result) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null, result);
+    }
+  });
+}

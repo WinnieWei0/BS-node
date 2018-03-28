@@ -174,7 +174,6 @@ module.exports.delWork=(req,res)=>{
 }
 // 个人中心
 module.exports.getUserList = (req, res) => {
-  console.log(req)
   modules.userListData(req.query.id, (err, data) => {
     if (err) {
       res.end('个人中心数据获取失败')
@@ -186,11 +185,23 @@ module.exports.getUserList = (req, res) => {
 // 作品详情
 module.exports.workDetail=(req,res)=>{
   modules.workDetailData(req.query.id, (err, data) => {
-    console.log(err||data)
     if (err) {
       res.end('作品详情数据获取失败')
     } else {
       res.end(JSON.stringify(data))
+    }
+  })
+}
+// 点赞
+module.exports.thumbs=(req,res)=>{
+  modules.thumbsData(req.query.id,req.query.count, (err, data) => {
+    if (err) {
+      res.end('点赞失败')
+    } else {
+      res.end(JSON.stringify({
+        code:200,
+        msg:'点赞成功'
+      }))
     }
   })
 }
