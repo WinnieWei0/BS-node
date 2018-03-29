@@ -97,8 +97,8 @@ module.exports.getGoodAuther = function (callback) {
   });
 }
 //查看留言
-module.exports.getMsgData = function (callback) {
-  var sql = 'SELECT m_id,userName,mDetail from `message` left join user on `message`.user_id=`user`.user_id';
+module.exports.getMsgData = function (id,callback) {
+  var sql = 'SELECT m_id,message.user_id,userName,mDetail,isShow from `message` left join user on `message`.user_id=`user`.user_id where login_id=' + id +' order by m_id desc';
   con.query(sql, (err, result) => {
     if (err) {
       callback(err);
@@ -108,9 +108,9 @@ module.exports.getMsgData = function (callback) {
   });
 }
 // 回复留言
-module.exports.insertMsgData = function (obj, callback) {
-  var sql = `insert into message(user_id,mDetail) values(?,?)`;
-  con.query(sql, [obj.user_id, obj.mDetail], (err, result) => {
+module.exports.replyMsg = function (obj, callback) {
+  var sql = `insert into message(login_id,user_id,mDetail,isShow) values(?,?,?,0)`;
+  con.query(sql, [obj.login_id,obj.user_id, obj.mDetail], (err, result) => {
     if (err) {
       callback(err);
     } else {
@@ -120,7 +120,7 @@ module.exports.insertMsgData = function (obj, callback) {
 }
 // 我的评论--查看
 module.exports.getCommentData = function (callback) {
-  var sql = 'SELECT c_id,userName,`comment`.w_id,workName,cmDetail from `comment` left join user on `comment`.user_id=`user`.user_id left join work on `work`.w_id=`comment`.user_id';
+  var sql = 'SELECT c_id,comment.user_id,userName,`comment`.w_id,workName,cmDetail,isShow from `comment` left join user on `comment`.user_id=`user`.user_id left join work on `work`.w_id=`comment`.user_id order by c_id desc';
   con.query(sql, (err, result) => {
     if (err) {
       callback(err);
@@ -131,8 +131,8 @@ module.exports.getCommentData = function (callback) {
 }
 // 我的评论--回复
 module.exports.insertCommentData = function (obj, callback) {
-  var sql = `insert into comment(user_id,w_id,cmDetail) values(?,?,?)`;
-  con.query(sql, [obj.user_id,obj.w_id,obj.cmDetail], (err, result) => {
+  var sql = `insert into comment(user_id,w_id,cmDetail,login_id,isShow) values(?,?,?,?,0)`;
+  con.query(sql, [obj.user_id,obj.w_id,obj.cmDetail,obj.login_id], (err, result) => {
     if (err) {
       callback(err);
     } else {
@@ -141,8 +141,8 @@ module.exports.insertCommentData = function (obj, callback) {
   });
 }
 // 我的粉丝--查看
-module.exports.FunsData = function (callback) {
-  var sql = 'SELECT funs_id,userName,status from `funs` left join user on `funs`.user_id=`user`.user_id';
+module.exports.FunsData = function (id,callback) {
+  var sql = 'SELECT funs_id,userName,status from `funs` left join user on `funs`.user_id=`user`.user_id where login_id='+id;
   con.query(sql, (err, result) => {
     if (err) {
       callback(err);
@@ -152,8 +152,8 @@ module.exports.FunsData = function (callback) {
   });
 }
 // 我的粉丝--关注他
-module.exports.updateFunsStatus = function (id, callback) {
-  var sql = 'update funs set status=1 where funs_id=' + id;
+module.exports.updateFunsStatus = function (obj, callback) {
+  var sql = 'update funs set status='+obj.status+' where funs_id=' + obj.id;
   con.query(sql, (err, result) => {
     if (err) {
       callback(err);
@@ -163,27 +163,27 @@ module.exports.updateFunsStatus = function (id, callback) {
   });
 }
 // 我的关注--查看
-module.exports.followData = function (callback) {
-  var sql = 'SELECT follow_id,userName,status from `follow` left join user on `follow`.user_id=`user`.user_id';
-  con.query(sql, (err, result) => {
-    if (err) {
-      callback(err);
-    } else {
-      callback(null, result);
-    }
-  });
-}
-// 我的关注--取消关注
-module.exports.noFollow = function (id, callback) {
-  var sql = 'update follow set status=0 where follow_id=' + id;
-  con.query(sql, (err, result) => {
-    if (err) {
-      callback(err);
-    } else {
-      callback(null, result);
-    }
-  });
-}
+// module.exports.followData = function (id,callback) {
+//   var sql = 'SELECT follow_id,userName,status from `follow` left join user on `follow`.user_id=`user`.user_id where login_id='+id;
+//   con.query(sql, (err, result) => {
+//     if (err) {
+//       callback(err);
+//     } else {
+//       callback(null, result);
+//     }
+//   });
+// }
+// // 我的关注--取消关注
+// module.exports.noFollow = function (id, callback) {
+//   var sql = 'update follow set status=0 where follow_id=' + id;
+//   con.query(sql, (err, result) => {
+//     if (err) {
+//       callback(err);
+//     } else {
+//       callback(null, result);
+//     }
+//   });
+// }
 // 个人中心数据
 module.exports.userListData = function (id,callback) {
   var sql = 'select `work`.w_id,workName,workDetail,count,createTime,count(c_id) as commentCount from work left join comment on `work`.w_id=`comment`.w_id where `work`.user_id='+id+' and isDel=0 group by `work`.w_id,`comment`.user_id';

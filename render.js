@@ -87,9 +87,22 @@ module.exports.getComment=(req,res)=>{
     }
   })
 }
+// 回复评论
+module.exports.replyComment = (req, res) => {
+  modules.insertCommentData(req.query,(err, data) => {
+    if (err) {
+      res.end('评论回复失败')
+    } else {
+      res.end(JSON.stringify({
+        code:200,
+        msg:'回复成功'
+      }))
+    }
+  })
+}
 // 留言数据
 module.exports.getMessageData = (req, res) => {
-  modules.getMsgData((err, data) => {
+  modules.getMsgData(req.query.id,(err, data) => {
     if (err) {
       res.end('留言数据获取失败')
     } else {
@@ -97,9 +110,22 @@ module.exports.getMessageData = (req, res) => {
     }
   })
 }
+// 回复留言
+module.exports.replyMessage=(req,res)=>{
+  modules.replyMsg(req.query,(err,data)=>{
+    if (err) {
+      res.end('留言回复失败')
+    } else {
+      res.end(JSON.stringify({
+        code:200,
+        msg:'回复留言成功'
+      }))
+    }
+  })
+}
 // 粉丝数据
 module.exports.getFunsData=(req,res)=>{
-modules.FunsData((err,data)=>{
+modules.FunsData(req.query.id,(err,data)=>{
   if (err) {
     res.end('粉丝数据获取失败')
   } else {
@@ -110,7 +136,7 @@ modules.FunsData((err,data)=>{
 // 关注粉丝
 module.exports.updateFuns=(req,res)=>{
   // console.log(req.query)
-  modules.updateFunsStatus(req.query.id,(err,data)=>{
+  modules.updateFunsStatus(req.query,(err,data)=>{
     if (err) {
       res.end('关注该粉丝失败')
     } else {
@@ -122,29 +148,29 @@ module.exports.updateFuns=(req,res)=>{
   })
 }
 // 关注数据
-module.exports.getFollowData = (req, res) => {
-  modules.followData((err, data) => {
-    if (err) {
-      res.end('关注数据获取失败')
-    } else {
-      res.end(JSON.stringify(data))
-    }
-  })
-}
-// 取消关注
-module.exports.updateFollow = (req, res) => {
-  // console.log(req.query)
-  modules.noFollow(req.query.id, (err, data) => {
-    if (err) {
-      res.end('取消关注失败')
-    } else {
-      res.end(JSON.stringify({
-        code: 200,
-        msg: '取消关注成功'
-      }))
-    }
-  })
-}
+// module.exports.getFollowData = (req, res) => {
+//   modules.followData(req.query.id,(err, data) => {
+//     if (err) {
+//       res.end('关注数据获取失败')
+//     } else {
+//       res.end(JSON.stringify(data))
+//     }
+//   })
+// }
+// // 取消关注
+// module.exports.updateFollow = (req, res) => {
+//   // console.log(req.query)
+//   modules.noFollow(req.query.id, (err, data) => {
+//     if (err) {
+//       res.end('取消关注失败')
+//     } else {
+//       res.end(JSON.stringify({
+//         code: 200,
+//         msg: '取消关注成功'
+//       }))
+//     }
+//   })
+// }
 //修改密码
 module.exports.changepwd=(req,res)=>{
   console.log(req)
