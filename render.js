@@ -87,8 +87,20 @@ module.exports.getComment=(req,res)=>{
     }
   })
 }
+//文章评论数据
+module.exports.getOneComment = (req, res) => {
+  modules.getOneCommentData((err, data) => {
+    if (err) {
+      res.end('评论数据获取失败')
+    } else {
+      res.end(JSON.stringify(data))
+    }
+  })
+}
 // 回复评论
 module.exports.replyComment = (req, res) => {
+  // console.log(typeof req.query.isShow)
+  req.query.isShow=Number(req.query.isShow)
   modules.insertCommentData(req.query,(err, data) => {
     if (err) {
       res.end('评论回复失败')
@@ -135,7 +147,6 @@ modules.FunsData(req.query.id,(err,data)=>{
 }
 // 关注粉丝
 module.exports.updateFuns=(req,res)=>{
-  // console.log(req.query)
   modules.updateFunsStatus(req.query,(err,data)=>{
     if (err) {
       res.end('关注该粉丝失败')
@@ -147,30 +158,38 @@ module.exports.updateFuns=(req,res)=>{
     }
   })
 }
-// 关注数据
-// module.exports.getFollowData = (req, res) => {
-//   modules.followData(req.query.id,(err, data) => {
-//     if (err) {
-//       res.end('关注数据获取失败')
-//     } else {
-//       res.end(JSON.stringify(data))
-//     }
-//   })
-// }
-// // 取消关注
-// module.exports.updateFollow = (req, res) => {
-//   // console.log(req.query)
-//   modules.noFollow(req.query.id, (err, data) => {
-//     if (err) {
-//       res.end('取消关注失败')
-//     } else {
-//       res.end(JSON.stringify({
-//         code: 200,
-//         msg: '取消关注成功'
-//       }))
-//     }
-//   })
-// }
+// 添加好友
+module.exports.addFuns=(req,res)=>{
+  modules.selectOne(req.query.user_id,(err,data)=>{
+    if(data.length){
+      res.end('已关注')
+    }else{
+      modules.addFunsData(req.query,(err,data)=>{
+    if (err) {
+      res.end('添加好友失败')
+    } else {
+      res.end(JSON.stringify({
+        code:200,
+        msg:'添加好友成功'
+      }))
+    }
+  })
+    }
+  })
+}
+// 添加留言
+module.exports.addMessage = (req, res) => {
+  modules.addMessageData(req.query, (err, data) => {
+    if (err) {
+      res.end('添加失败')
+    } else {
+      res.end(JSON.stringify({
+        code: 200,
+        msg: '添加成功'
+      }))
+    }
+  })
+}
 //修改密码
 module.exports.changepwd=(req,res)=>{
   console.log(req)
@@ -231,34 +250,3 @@ module.exports.thumbs=(req,res)=>{
     }
   })
 }
-
-// // 上传图片
-// module.exports.imgUpload = function (req, res) {
-//   var form = new formidable.IncomingForm();
-//   // 是否保留后缀名
-//   form.keepExtensions = true;
-//   // 上传到文件夹
-//   form.uploadDir = './images/';
-//   form.parse(req, (err, fields, files) => {
-//     if (err) {
-//       var obj = {
-//         'code': 0,
-//         'msg': '图片上传错误'
-//       };
-//       return res.end(JSON.stringify(obj));
-//     }
-//     // 获取之前的图片名称
-//     var last = fields.last;
-//     // 删除上次上传的图片
-//     fs.unlink(__dirname + '/images/' + last, () => { });
-//     // 返回获取到的文件名
-//     var imgPath = path.parse(files.img.path).base;
-//     var obj = {
-//       'code': 1,
-//       'msg': '图片上传成功',
-//       'img': imgPath
-//     };
-//     res.end(JSON.stringify(obj));
-//   });
-
-// }

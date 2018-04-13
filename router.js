@@ -14,10 +14,11 @@ router.get('/comment', render.getComment)
 router.get('/comment/reply', render.replyComment)
 router.get('/funs', render.getFunsData)
 router.get('/funs/update', render.updateFuns)
-// router.get('/follow/update', render.updateFollow)
-// router.get('/follow', render.getFollowData)
 router.get('/userlist', render.getUserList)
 router.get('/detail', render.workDetail)
 router.get('/thumbs', render.thumbs)
+router.get('/addfuns',render.addFuns)
+router.get('/addmsg', render.addMessage)
+router.get('/onecomment', render.getOneComment)
 
 module.exports = router
