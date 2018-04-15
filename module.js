@@ -1,7 +1,7 @@
 // 连接数据库
 var sql = require('mysql');
 var con = sql.createConnection({
-  host: 'localhost',
+  host: '127.0.0.1',
   user: 'root',
   password: 'root',
   database: 'bs'
@@ -64,7 +64,7 @@ module.exports.delWorkData= function (id, callback) {
 }
 // 最新作品
 module.exports.getNewWork = function (callback) {
-  var sql = `select w_id,userName,workName,createTime from work left join user on work.user_id=user.user_id where isDel=0 order by createTime desc limit 0,10`;
+  var sql = `select w_id,userName,workName,createTime from work left join user on work.user_id=user.user_id where isDel=0 order by createTime desc limit 0,15`;
   con.query(sql, (err, result) => {
     if (err) {
       console.log(err)
@@ -198,7 +198,7 @@ module.exports.addFunsData = function (obj, callback) {
 }
 // 添加留言
 module.exports.addMessageData = function (obj, callback) {
-  var sql = `insert into message(login_id,user_id,mDetail,isShow) values(${obj.login_id},${obj.user_id},'${obj.mDetail}',0)`;
+  var sql = `insert into message(login_id,user_id,mDetail,isShow) values(${obj.login_id},${obj.user_id},'${obj.mDetail}',1)`;
   con.query(sql,(err, result) => {
     if (err) {
       callback(err);

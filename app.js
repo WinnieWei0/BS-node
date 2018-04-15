@@ -4,7 +4,7 @@ const cors=require('cors')
 const bodyParser = require('body-parser')
 let app=express()
 app.use(cors({
-  origin: 'http://localhost:8080',
+  origin: 'http://127.0.0.1:8080',
   credentials: true  // 是否带cookie
 }));
 // 接收不到post数据，添加中间件
