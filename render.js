@@ -1,6 +1,6 @@
 // 处理
-// var formidable = require('formidable');
-// var path = require('path');
+var formidable = require('formidable');
+var path = require('path');
 var myurl = require('url');
 var queryString = require('querystring');
 var modules = require('./module.js');
@@ -248,5 +248,77 @@ module.exports.thumbs=(req,res)=>{
         msg:'点赞成功'
       }))
     }
+  })
+}
+// 上传图片
+module.exports.uploadImg = function (req, res) {
+  console.log(req)
+  var form = new formidable.IncomingForm();
+  // console.log(form)
+  // 是否保留后缀名
+  form.keepExtensions = true;
+  // console.log(11111111111)
+  // 上传到文件夹
+  form.uploadDir = './images/';
+  // console.log(2222222222)
+  form.parse(req, (err, fields, files) => {
+    // console.log(3333333333333)
+    // console.log(fields,files)
+    if (err) {
+      var obj = {
+        'code': 0,
+        'msg': '图片上传错误'
+      };
+      return res.end(JSON.stringify(obj));
+    }
+    // 获取之前的图片名称
+    // var last = fields.last;
+    // 删除上次上传的图片
+    // fs.unlink(__dirname + '/images/' + last, () => { });
+    // 返回获取到的文件名
+    // var imgPath = path.parse(files.img.path).base;
+    var imgPath = path.parse(files.path).base;
+    var obj = {
+      'code': 1,
+      'msg': '图片上传成功',
+      'img': imgPath
+    };
+    res.end(JSON.stringify(obj));
+    
+  // var form = new formidable.IncomingForm();
+  // // console.log(form)
+  // // 是否保留后缀名
+  // form.keepExtensions = true;
+  // // 上传到文件夹
+  // form.uploadDir = './images/img';
+  // form.parse(req, (err, fields, files) => {
+    
+  //   console.log(fields)
+  //   // console.log(typeof files)
+  //   console.log(files)
+  //   // console.log(files.name)
+  //   if (err) {
+  //     return res.end(JSON.stringify({
+  //       'code': 0,
+  //       'msg': '图片上传错误'
+  //     }));
+  //   }
+  //   // 获取之前的图片名称
+  //   // var last = fields.last;
+  //   // console.log(last)
+  //   // 删除上次上传的图片
+  //   // fs.unlink(__dirname + '/images/' + last, () => { });
+  //   // 返回获取到的文件名
+  //   // console.log('------------------')
+  //   // console.log(files.path)
+  //   // console.log(typeof files.path)
+  //   var imgPath = path.parse(files.path).base;
+  //   // console.log(imgPath)
+  //   res.end(JSON.stringify({
+  //     'code': 1,
+  //     'msg': '图片上传成功',
+  //     'img': imgPath
+  //   }));
+  // });
   })
 }
