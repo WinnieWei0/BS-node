@@ -42,8 +42,8 @@ module.exports.modify = function (obj, callback) {
 }
 // 发布作品
 module.exports.insertWork = function (obj, callback) {
-  var sql = 'insert into work(user_id,workName,workDetail,workCode,createTime) values(?,?,?,?,?)';
-  con.query(sql, [obj.user_id,obj.workName, obj.workDetail, obj.workCode,obj.createTime], (err, result) => {
+  var sql = 'insert into work(user_id,workName,workCode,createTime,imgList,fileList) values(?,?,?,?,?,?)';
+  con.query(sql, [obj.user_id,obj.workName, obj.workCode,obj.createTime,obj.imgList,obj.fileList], (err, result) => {
     if (err) {
       callback(err);
     } else {
@@ -76,7 +76,7 @@ module.exports.getNewWork = function (callback) {
 }
 // 推荐作品
 module.exports.getGoodWork = function (callback) {
-  var sql = `select w_id,userName,workName,workDetail,createTime,count from work left join user on work.user_id=user.user_id where isDel=0 order by count desc limit 0,10`;
+  var sql = `select w_id,userName,workName,createTime,count from work left join user on work.user_id=user.user_id where isDel=0 order by count desc limit 0,10`;
   con.query(sql, (err, result) => {
     if (err) {
       callback(err);
@@ -130,8 +130,8 @@ module.exports.getCommentData = function (callback) {
   });
 }
 // 文章评论
-module.exports.getOneCommentData = function (callback) {
-  var sql = 'SELECT c_id,comment.user_id,userName,`comment`.w_id,workName,cmDetail,isShow from `comment` left join user on `comment`.user_id=`user`.user_id left join work on `work`.w_id=`comment`.user_id where `work`.w_id=1 order by c_id desc';
+module.exports.getOneCommentData = function (id,callback) {
+  var sql = 'SELECT c_id,comment.user_id,userName,`comment`.w_id,workName,cmDetail,isShow from `comment` left join user on `comment`.user_id=`user`.user_id left join work on `work`.w_id=`comment`.w_id where `work`.w_id='+id+' order by c_id desc';
   con.query(sql, (err, result) => {
     if (err) {
       callback(err);
@@ -209,7 +209,7 @@ module.exports.addMessageData = function (obj, callback) {
 }
 // 个人中心数据
 module.exports.userListData = function (id,callback) {
-  var sql = 'select `work`.w_id,workName,workDetail,count,createTime,count(c_id) as commentCount from work left join comment on `work`.w_id=`comment`.w_id where `work`.user_id='+id+' and isDel=0 group by `work`.w_id,`comment`.user_id';
+  var sql = 'select `work`.w_id,workName,count,createTime,count(c_id) as commentCount from work left join comment on `work`.w_id=`comment`.w_id where `work`.user_id='+id+' and isDel=0 group by `work`.w_id,`comment`.user_id';
   con.query(sql, (err, result) => {
     if (err) {
       callback(err);
@@ -220,7 +220,7 @@ module.exports.userListData = function (id,callback) {
 }
 // 作品详情
 module.exports.workDetailData=function (id,callback) {
-  var sql = 'select w_id,userName,workName,workDetail,workCode,count from `work` left join user on `work`.user_id=`user`.user_id where isDel=0 and w_id='+id;
+  var sql = 'select w_id,userName,workName,workCode,count,imgList,fileList from `work` left join user on `work`.user_id=`user`.user_id where isDel=0 and w_id='+id;
   con.query(sql, (err, result) => {
     if (err) {
       callback(err);

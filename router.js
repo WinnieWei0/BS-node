@@ -21,5 +21,6 @@ router.get('/addfuns',render.addFuns)
 router.get('/addmsg', render.addMessage)
 router.get('/onecomment', render.getOneComment)
 router.post('/uploadimg',render.uploadImg)
+router.post('/uploadfile', render.uploadFile)
 
 module.exports = router

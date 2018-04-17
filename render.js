@@ -89,7 +89,7 @@ module.exports.getComment=(req,res)=>{
 }
 //文章评论数据
 module.exports.getOneComment = (req, res) => {
-  modules.getOneCommentData((err, data) => {
+  modules.getOneCommentData(req.query.id,(err, data) => {
     if (err) {
       res.end('评论数据获取失败')
     } else {
@@ -99,7 +99,6 @@ module.exports.getOneComment = (req, res) => {
 }
 // 回复评论
 module.exports.replyComment = (req, res) => {
-  // console.log(typeof req.query.isShow)
   req.query.isShow=Number(req.query.isShow)
   modules.insertCommentData(req.query,(err, data) => {
     if (err) {
@@ -252,73 +251,26 @@ module.exports.thumbs=(req,res)=>{
 }
 // 上传图片
 module.exports.uploadImg = function (req, res) {
-  console.log(req)
-  var form = new formidable.IncomingForm();
-  // console.log(form)
-  // 是否保留后缀名
+  if (req.url == '/uploadimg' && req.method.toLowerCase() == 'post') {
+    var form = new formidable.IncomingForm();
+    // console.log(form)
   form.keepExtensions = true;
-  // console.log(11111111111)
   // 上传到文件夹
-  form.uploadDir = './images/';
-  // console.log(2222222222)
-  form.parse(req, (err, fields, files) => {
-    // console.log(3333333333333)
-    // console.log(fields,files)
-    if (err) {
-      var obj = {
-        'code': 0,
-        'msg': '图片上传错误'
-      };
-      return res.end(JSON.stringify(obj));
-    }
-    // 获取之前的图片名称
-    // var last = fields.last;
-    // 删除上次上传的图片
-    // fs.unlink(__dirname + '/images/' + last, () => { });
-    // 返回获取到的文件名
-    // var imgPath = path.parse(files.img.path).base;
-    var imgPath = path.parse(files.path).base;
-    var obj = {
-      'code': 1,
-      'msg': '图片上传成功',
-      'img': imgPath
-    };
-    res.end(JSON.stringify(obj));
-    
-  // var form = new formidable.IncomingForm();
-  // // console.log(form)
-  // // 是否保留后缀名
-  // form.keepExtensions = true;
-  // // 上传到文件夹
-  // form.uploadDir = './images/img';
-  // form.parse(req, (err, fields, files) => {
-    
-  //   console.log(fields)
-  //   // console.log(typeof files)
-  //   console.log(files)
-  //   // console.log(files.name)
-  //   if (err) {
-  //     return res.end(JSON.stringify({
-  //       'code': 0,
-  //       'msg': '图片上传错误'
-  //     }));
-  //   }
-  //   // 获取之前的图片名称
-  //   // var last = fields.last;
-  //   // console.log(last)
-  //   // 删除上次上传的图片
-  //   // fs.unlink(__dirname + '/images/' + last, () => { });
-  //   // 返回获取到的文件名
-  //   // console.log('------------------')
-  //   // console.log(files.path)
-  //   // console.log(typeof files.path)
-  //   var imgPath = path.parse(files.path).base;
-  //   // console.log(imgPath)
-  //   res.end(JSON.stringify({
-  //     'code': 1,
-  //     'msg': '图片上传成功',
-  //     'img': imgPath
-  //   }));
-  // });
-  })
+  form.uploadDir = './images/img';
+    form.parse(req, function (err, fields, files) {
+      res.end(JSON.stringify(files))
+    });
+}
+}
+// 上传文件
+module.exports.uploadFile = function (req, res) {
+  if (req.url == '/uploadfile' && req.method.toLowerCase() == 'post') {
+    var form = new formidable.IncomingForm();
+    form.keepExtensions = true;
+    // 上传到文件夹
+    form.uploadDir = './images/file';
+    form.parse(req, function (err, fields, files) {
+      res.end(JSON.stringify(files))
+    });
+  }
 }
